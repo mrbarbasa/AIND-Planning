@@ -199,8 +199,16 @@ class AirCargoProblem(Problem):
         conditions by ignoring the preconditions required for an action to be
         executed.
         """
-        # TODO implement (see Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2)
+        # See Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2
+
+        # In this project's case, the number of minimum actions to achieve the goal
+        #   conditions given that all preconditions are ignored is simply the
+        #   number of unmet goals from the current state.
         count = 0
+        current_state = decode_state(node.state, self.state_map)
+        for fluent in self.goal:
+            if fluent not in current_state.pos:
+                count += 1
         return count
 
 
