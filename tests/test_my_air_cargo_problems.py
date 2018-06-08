@@ -59,7 +59,7 @@ class TestAirCargoMethods(unittest.TestCase):
 
     def test_AC_get_actions(self):
         # to see a list of the actions, uncomment below
-        # print("\nactions for problem")
+        # print("\nactions for problem:")
         # for action in self.p1.actions_list:
         #     print("{}{}".format(action.name, action.args))
         self.assertEqual(len(self.p1.actions_list), 20)
@@ -77,7 +77,7 @@ class TestAirCargoMethods(unittest.TestCase):
         self.assertTrue(expr('At(C1, SFO)') in fs.neg)
 
     def test_h_ignore_preconditions(self):
-        n = Node(self.p1.initial)
+        n = Node(self.p1.initial) # boolean T/F string
         self.assertEqual(self.p1.h_ignore_preconditions(n),2)
 
 if __name__ == '__main__':
