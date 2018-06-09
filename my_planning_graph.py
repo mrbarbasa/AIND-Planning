@@ -501,9 +501,9 @@ class PlanningGraph():
            Negation
            Inconsistent support
 
-        :param nodeset: set of PgNode_a (siblings in the same level)
+        :param nodeset: set of PgNode_s (siblings in the same level)
         :return:
-            mutex set in each PgNode_a in the set is appropriately updated
+            mutex set in each PgNode_s in the set is appropriately updated
         """
         nodelist = list(nodeset)
         for i, n1 in enumerate(nodelist[:-1]):
@@ -524,8 +524,7 @@ class PlanningGraph():
         :param node_s2: PgNode_s
         :return: bool
         """
-        # TODO test for negation between nodes
-        return False
+        return node_s1.symbol == node_s2.symbol and node_s1.is_pos != node_s2.is_pos
 
     def inconsistent_support_mutex(self, node_s1: PgNode_s, node_s2: PgNode_s):
         """
