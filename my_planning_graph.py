@@ -333,7 +333,7 @@ class PlanningGraph():
         :return:
             adds S nodes to the current level in self.s_levels[level]
         """
-        # TODO add literal S level to the planning graph as described in the Russell-Norvig text
+        # add literal S level to the planning graph as described in the Russell-Norvig text
         # 1. determine what literals to add
         # 2. connect the nodes
         # for example, every A node in the previous level has a list of S nodes in effnodes that represent the effect
@@ -342,11 +342,23 @@ class PlanningGraph():
         #   all of the new S nodes as children of all the A nodes that could produce them, and likewise add the A nodes to the
         #   parent sets of the S nodes
 
+        # First create the set for this S literal level
+        self.s_levels.append(set())
+        # Previous A action level is `level - 1` from the current S node
+        prev_a_nodes = self.a_levels[level - 1] # A set of A nodes
+        for a_node in prev_a_nodes:
+            for prev_s_node in a_node.effnodes:
+                # Add an S node from the previous A node's effnodes
+                new_s_node = PgNode_s(prev_s_node.symbol, prev_s_node.is_pos)
+                new_s_node.parents.add(a_node)
+                a_node.children.add(new_s_node)
+                self.s_levels[level].add(new_s_node)
+
     def update_a_mutex(self, nodeset):
         """ Determine and update sibling mutual exclusion for A-level nodes
 
         Mutex action tests section from 3rd Ed. 10.3 or 2nd Ed. 11.4
-        A mutex relation holds between two actions a given level
+        A mutex relation holds between two actions at a given level
         if the planning graph is a serial planning graph and the pair are nonpersistence actions
         or if any of the three conditions hold between the pair:
            Inconsistent Effects
