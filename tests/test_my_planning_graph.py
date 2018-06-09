@@ -14,7 +14,7 @@ from my_planning_graph import (
 class TestPlanningGraphLevels(unittest.TestCase):
     def setUp(self):
         self.p = have_cake()
-        self.pg = PlanningGraph(self.p, self.p.initial)
+        self.pg = PlanningGraph(self.p, self.p.initial) # string T/F
 
     def test_add_action_level(self):
         # for level, nodeset in enumerate(self.pg.a_levels):
@@ -26,7 +26,7 @@ class TestPlanningGraphLevels(unittest.TestCase):
     def test_add_literal_level(self):
         # for level, nodeset in enumerate(self.pg.s_levels):
         #     for node in nodeset:
-        #         print("Level {}: {})".format(level, node.literal))
+        #         print("Level {}: {})".format(level, node.symbol))
         self.assertEqual(len(self.pg.s_levels[0]), 2, len(self.pg.s_levels[0]))
         self.assertEqual(len(self.pg.s_levels[1]), 4, len(self.pg.s_levels[1]))
         self.assertEqual(len(self.pg.s_levels[2]), 4, len(self.pg.s_levels[2]))
