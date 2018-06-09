@@ -555,7 +555,24 @@ class PlanningGraph():
 
         :return: int
         """
-        level_sum = 0
-        # TODO implement
-        # for each goal in the problem, determine the level cost, then add them together
+        level_sum = 0 # A 0-indexed level sum
+
+        # Determine the level cost for each goal in the problem by finding
+        #   the first level in which each goal appears; lastly, sum them together
+        for goal in self.problem.goal:
+            is_met = False
+            # print('Goal:', goal)
+            for level, s_level in enumerate(self.s_levels):
+                # print('Level:', level, '-- Nodes:', len(s_level))
+                for s_node in s_level:
+                    # print('Level', level, 'Node:', s_node.is_pos, s_node.symbol)
+                    if s_node.is_pos and s_node.symbol.__eq__(goal):
+                        level_sum += level
+                        is_met = True
+                        # print('GOAL MET')
+                        break
+                # No need to continue searching more levels if the current goal is met
+                if is_met:
+                    break
+
         return level_sum
