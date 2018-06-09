@@ -410,12 +410,35 @@ class PlanningGraph():
         :param node_a2: PgNode_a
         :return: bool
         """
-        # TODO test for Inconsistent Effects between nodes
+        # Check the positive effects of A node 1 against the
+        #   negative effects of A node 2
+        for f_pos in node_a1.action.effect_add:
+            if f_pos in node_a2.action.effect_rem:
+                return True
+
+        # Check the negative effects of A node 1 against the
+        #   positive effects of A node 2
+        for f_neg in node_a1.action.effect_rem:
+            if f_neg in node_a2.action.effect_add:
+                return True
+
+        # Check the positive effects of A node 2 against the
+        #   negative effects of A node 1
+        for f_pos in node_a2.action.effect_add:
+            if f_pos in node_a1.action.effect_rem:
+                return True
+
+        # Check the negative effects of A node 2 against the
+        #   positive effects of A node 1
+        for f_neg in node_a2.action.effect_rem:
+            if f_neg in node_a1.action.effect_add:
+                return True
+
         return False
 
     def interference_mutex(self, node_a1: PgNode_a, node_a2: PgNode_a) -> bool:
         """
-        Test a pair of actions for mutual exclusion, returning True if the 
+        Test a pair of actions for mutual exclusion, returning True if the
         effect of one action is the negation of a precondition of the other.
 
         HINT: The Action instance associated with an action node is accessible
