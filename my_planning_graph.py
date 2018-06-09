@@ -196,7 +196,7 @@ def mutexify(node1: PgNode, node2: PgNode):
 class PlanningGraph():
     """
     A planning graph as described in chapter 10 of the AIMA text. The planning
-    graph can be used to reason about 
+    graph can be used to reason about
     """
 
     def __init__(self, problem: Problem, state: str, serial_planning=True):
@@ -299,13 +299,30 @@ class PlanningGraph():
         :return:
             adds A nodes to the current level in self.a_levels[level]
         """
-        # TODO add action A level to the planning graph as described in the Russell-Norvig text
+        # add action A level to the planning graph as described in the Russell-Norvig text
         # 1. determine what actions to add and create those PgNode_a objects
         # 2. connect the nodes to the previous S literal level
         # for example, the A0 level will iterate through all possible actions for the problem and add a PgNode_a to a_levels[0]
         #   set iff all prerequisite literals for the action hold in S0.  This can be accomplished by testing
         #   to see if a proposed PgNode_a has prenodes that are a subset of the previous S level.  Once an
         #   action node is added, it MUST be connected to the S node instances in the appropriate s_level set.
+
+        # First create the set for this A action level
+        self.a_levels.append(set())
+        # Previous S literal level is the same `level` as the current A node
+        precond_s_nodes = self.s_levels[level] # A set of S nodes
+        for action in self.all_actions:
+            a_node = PgNode_a(action)
+            # For this action, check that all prerequisite literals hold
+            #   in the previous S literal level
+            if a_node.prenodes.issubset(precond_s_nodes):
+                # Connect the A node to the previous level S nodes
+                for s_node in precond_s_nodes:
+                    if s_node in a_node.prenodes:
+                        a_node.parents.add(s_node)
+                        s_node.children.add(a_node)
+                # Add the A node to the current A action level
+                self.a_levels[level].add(a_node)
 
     def add_literal_level(self, level):
         """ add an S (literal) level to the Planning Graph
